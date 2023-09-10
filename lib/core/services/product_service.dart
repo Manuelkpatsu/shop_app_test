@@ -12,12 +12,12 @@ class ProductService extends HttpService {
       final response = await get(Api.products);
 
       if (isSuccessful(response)) {
-        final data = json.decode(response.body);
+        final data = json.decode(response.body)['products'];
         return List<Product>.from(data.map((i) => Product.fromJson(i)));
       }
       throw ServerFailure(
         statusCode: response.statusCode,
-        message: "Sorry!, an error occured!",
+        message: response.reasonPhrase ?? "Sorry!, an error occured!",
       );
     } on SocketException {
       throw const NetworkFailure();

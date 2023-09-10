@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/core/enums/view_state.dart';
+import 'package:shop_app/core/model/product.dart';
+import 'package:shop_app/core/view_models/cart_vm.dart';
+import 'package:shop_app/core/view_models/product_vm.dart';
+
+import 'product_tile.dart';
+import 'widget/cart_badge.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,40 +16,56 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await context.read<ProductVM>().getProducts();
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final productVM = Provider.of<ProductVM>(context);
+    final cartVM = Provider.of<CartVM>(context);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Flutter Demo Home Page'),
+        title: const Text('Shop Products'),
+        actions: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                splashColor: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => Container()),
+                  );
+                },
+              ),
+              cartVM.cartSize != 0
+                  ? CartBadge(cartItemSize: cartVM.cartSize)
+                  : const SizedBox.shrink()
+            ],
+          )
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: productVM.state == ViewState.busy
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (BuildContext context, int index) {
+                Product product = productVM.products[index];
+
+                return ProductTile(
+                  product: product,
+                  onPressed: () {},
+                  onAddToCartPressed: () {},
+                );
+              },
+              itemCount: productVM.products.length,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }

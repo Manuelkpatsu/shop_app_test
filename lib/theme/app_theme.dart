@@ -12,6 +12,7 @@ class AppTheme {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        foregroundColor: Colors.black,
       ),
       textTheme: const TextTheme(
         titleMedium: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),

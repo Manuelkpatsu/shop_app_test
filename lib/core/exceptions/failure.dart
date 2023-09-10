@@ -20,8 +20,15 @@ class NetworkFailure extends Failure {
 
 @immutable
 class ServerFailure extends Failure {
-  const ServerFailure({required String message, required int statusCode, String? data})
-      : super(message: message, statusCode: statusCode, data: data);
+  const ServerFailure({
+    required String message,
+    required int statusCode,
+    String? data,
+  }) : super(
+          message: "$statusCode - $message",
+          statusCode: statusCode,
+          data: data,
+        );
 }
 
 @immutable
