@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/core/providers.dart';
 
+import 'core/exceptions/failure.dart';
 import 'core/locator.dart';
 import 'screen/home/home_screen.dart';
 import 'theme/app_theme.dart';
@@ -21,10 +23,25 @@ void main() async {
         FlutterError.dumpErrorToConsole(details);
         if (kReleaseMode) exit(1);
       };
+
       runApp(const App());
     },
     (error, stack) {
       sl.get<Logger>().e('Unhandled exception', error: error, stackTrace: stack);
+      String errorMessage;
+      if (error is Failure) {
+        errorMessage = error.message;
+      } else {
+        errorMessage = 'Sorry!\nAn error occurred. Please try again.';
+      }
+      Get.snackbar(
+        'Error!',
+        errorMessage,
+        colorText: Colors.white,
+        backgroundColor: Colors.black,
+        icon: const Icon(Icons.error_outline_rounded, color: Colors.white),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     },
   );
 }
