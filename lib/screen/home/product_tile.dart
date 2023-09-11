@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/core/model/product.dart';
 
-import 'widget/product_image.dart';
-import 'widget/product_name_text.dart';
-import 'widget/product_price_text.dart';
+import '../widget/product_image.dart';
+import '../widget/product_name_text.dart';
+import '../widget/product_price_text.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;

@@ -4,6 +4,7 @@ import 'package:shop_app/core/enums/view_state.dart';
 import 'package:shop_app/core/model/product.dart';
 import 'package:shop_app/core/view_models/cart_vm.dart';
 import 'package:shop_app/core/view_models/product_vm.dart';
+import 'package:shop_app/screen/cart/cart_screen.dart';
 
 import 'product_tile.dart';
 import 'widget/cart_badge.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 splashColor: Colors.blue,
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Container()),
+                    MaterialPageRoute(builder: (context) => const CartScreen()),
                   );
                 },
               ),
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return ProductTile(
                   product: product,
                   onPressed: () {},
-                  onAddToCartPressed: () {},
+                  onAddToCartPressed: () => context.read<CartVM>().addToCart(product),
                 );
               },
               itemCount: productVM.products.length,

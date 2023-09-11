@@ -9,7 +9,11 @@ class CartSizeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '$cartSize',
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+      ),
       textAlign: TextAlign.center,
     );
   }

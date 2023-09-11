@@ -11,11 +11,11 @@ class CartBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       right: 11,
-      top: 7,
+      top: 4,
       child: Container(
         padding: const EdgeInsets.all(2),
         decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-        constraints: const BoxConstraints(minWidth: 15, minHeight: 15),
+        constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
         child: CartSizeText(cartSize: cartItemSize),
       ),
     );
