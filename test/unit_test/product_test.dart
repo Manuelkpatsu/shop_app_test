@@ -44,45 +44,51 @@ void main() {
   final mockProductService = MockProductService();
   productVM.productService = mockProductService;
 
-  group('Unit Tests on ProductVM', () {
-    void getProductsFromService() {
-      when(() => mockProductService.getProducts()).thenAnswer(
-        (_) async => products,
+  group(
+    'Unit Tests on ProductVM',
+    () {
+      void getProductsFromService() {
+        when(() => mockProductService.getProducts()).thenAnswer(
+          (_) async => products,
+        );
+      }
+
+      test(
+        "gets products using the ProductService",
+        () async {
+          getProductsFromService();
+          await productVM.getProducts();
+          verify(() => mockProductService.getProducts()).called(1);
+        },
       );
-    }
 
-    test(
-      "gets products using the ProductService",
-      () async {
-        getProductsFromService();
-        await productVM.getProducts();
-        verify(() => mockProductService.getProducts()).called(1);
-      },
-    );
-
-    test(
-      """indicates loading of data,
+      test(
+        """indicates loading of data,
         sets products to the ones from the service,
         indicates that the data is not being loaded anymore""",
-      () async {
-        getProductsFromService();
-        final future = productVM.getProducts();
-        expect(productVM.state, ViewState.busy);
-        await future;
-        expect(productVM.products, products);
-        expect(productVM.state, ViewState.idle);
-      },
-    );
+        () async {
+          getProductsFromService();
+          final future = productVM.getProducts();
+          expect(productVM.state, ViewState.busy);
+          await future;
+          expect(productVM.products, products);
+          expect(productVM.state, ViewState.idle);
+        },
+      );
 
-    test('page should load a list of products from dummyJSON', () async {
-      getProductsFromService();
-      final future = productVM.getProducts();
-      await future;
-      expect(productVM.products.length, 3);
-      expect(productVM.products[0].name, 'iPhone 9');
-      expect(productVM.products[0].price, 549);
-      expect(productVM.products[1].name, 'iPhone X');
-      expect(productVM.products[1].price, 899);
-    });
-  });
+      test(
+        'page should load a list of products from dummyJSON',
+        () async {
+          getProductsFromService();
+          final future = productVM.getProducts();
+          await future;
+          expect(productVM.products.length, 3);
+          expect(productVM.products[0].name, 'iPhone 9');
+          expect(productVM.products[0].price, 549);
+          expect(productVM.products[1].name, 'iPhone X');
+          expect(productVM.products[1].price, 899);
+        },
+      );
+    },
+  );
 }
