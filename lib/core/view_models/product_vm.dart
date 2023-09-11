@@ -6,7 +6,7 @@ import 'package:shop_app/core/services/product_service.dart';
 import 'base_vm.dart';
 
 class ProductVM extends BaseVM {
-  final ProductService _productService = sl<ProductService>();
+  ProductService productService = sl<ProductService>();
 
   List<Product> _products = <Product>[];
 
@@ -15,7 +15,7 @@ class ProductVM extends BaseVM {
   Future getProducts() async {
     applyState(ViewState.busy);
     try {
-      _products = await _productService.getProducts();
+      _products = await productService.getProducts();
     } catch (e) {
       rethrow;
     } finally {
