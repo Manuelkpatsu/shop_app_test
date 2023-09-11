@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/util/currency.dart';
 
 import 'generic_dialog.dart';
 
@@ -9,7 +10,7 @@ Future<bool> showConfirmationDialog({
   return showGenericDialog<bool>(
     context: context,
     title: 'Confirm Purchase?',
-    content: 'Grand Total: \$${totalCost.toStringAsFixed(2)}',
+    content: 'Grand Total: ${Currency.formatCurrency(amount: totalCost)}',
     optionsBuilder: () => {
       'Cancel': false,
       'Confirm': true,
